@@ -1,0 +1,13 @@
+# Core ML / NLP (baseline)
+numpy>=1.24.0,<3
+pandas>=2.0.0,<3
+scikit-learn>=1.3.0,<2
+nltk>=3.8.1,<4
+joblib>=1.3.0,<2
+
+# BERT / sentence embeddings extension
+sentence-transformers>=2.2.0,<6
+torch>=2.0.0,<3
+
+# Tests
+pytest>=7.4.0,<10
