@@ -18,6 +18,10 @@ models/*.joblib
 models/*.pkl
 !models/.gitkeep
 
+# Versioned artifacts (keep models/versions/.gitkeep only)
+models/versions/*
+!models/versions/.gitkeep
+
 # IDE
 .idea/
 .vscode/

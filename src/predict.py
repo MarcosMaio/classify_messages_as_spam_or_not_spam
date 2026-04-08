@@ -12,6 +12,7 @@ _SRC = Path(__file__).resolve().parent
 if str(_SRC) not in sys.path:
     sys.path.insert(0, str(_SRC))
 
+from model_registry import resolve_active_models_dir  # noqa: E402
 from preprocess import preprocess_text  # noqa: E402
 
 
@@ -78,9 +79,17 @@ def main() -> None:
         "--models-dir",
         type=Path,
         default=None,
-        help="Override directory containing .joblib artifacts.",
+        help="Explicit directory with .joblib artifacts (overrides --version and current).",
+    )
+    parser.add_argument(
+        "--version",
+        type=str,
+        default=None,
+        help="Load models/versions/<version> (e.g. v02). Ignored if --models-dir is set.",
     )
     args = parser.parse_args()
+
+    root = resolve_active_models_dir(explicit=args.models_dir, version=args.version)
 
     if args.message is None:
         text = sys.stdin.readline().strip()
@@ -91,9 +100,7 @@ def main() -> None:
         print("Error: empty message.", file=sys.stderr)
         sys.exit(1)
 
-    label, proba = predict_one(
-        text, model_name=args.model, models_path=args.models_dir
-    )
+    label, proba = predict_one(text, model_name=args.model, models_path=root)
     if proba == proba:  # not NaN
         print(f"{label} (P(spam)={proba:.4f})")
     else:
